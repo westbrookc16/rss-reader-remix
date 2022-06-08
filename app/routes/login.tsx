@@ -21,6 +21,7 @@ export default function Screen() {
   return (
     <Form method="post" action="/auth0">
       {error ? <div>{error.message}</div> : null}
+      Click the button below to log in with google or an email and password.
       <button>Sign In with Auth0</button>
     </Form>
   );
