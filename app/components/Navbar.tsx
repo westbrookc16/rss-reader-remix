@@ -1,7 +1,14 @@
+import type { Feed } from "@prisma/client";
 import { Link } from "@remix-run/react";
 import { Form } from "@remix-run/react";
 import type { Auth0Profile } from "remix-auth-auth0";
-export default function Navbar({ user }: { user: Auth0Profile | null }) {
+export default function Navbar({
+  user,
+  feeds,
+}: {
+  user: Auth0Profile | null;
+  feeds: Feed[] | null;
+}) {
   return (
     <div>
       {user && (
@@ -12,6 +19,13 @@ export default function Navbar({ user }: { user: Auth0Profile | null }) {
           <Link to="/feeds/view">View Unread Items</Link>
           <Link to="/feeds/viewall">View All Items</Link>
           <Link to="/feeds/addfeed">add Feed</Link>
+          {feeds?.map((f) => {
+            return (
+              <Link key={f.id} to={`/feeds/view/${f.id}`}>
+                {f.title}
+              </Link>
+            );
+          })}
         </div>
       )}
       {!user && (
