@@ -1,4 +1,4 @@
-import type { DisplayItem } from "~/routes/feeds/view";
+import type { DisplayItem } from "~/types/DisplayItem";
 import React from "react";
 export default function ViewFeeds({ items }: { items: DisplayItem[] }) {
   let flag: number = 0;

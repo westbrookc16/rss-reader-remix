@@ -41,6 +41,15 @@ const auth0Strategy = new Auth0Strategy(
       where: { id: profile.id },
       update: { email: profile.emails[0].value },
     });
+    //add "uncategorized" category if none exists
+    const cat = await prisma.category.findMany({
+      where: { AND: [{ name: "Uncategorized" }, { userId: profile.id }] },
+    });
+    if (cat.length === 0) {
+      await prisma.category.create({
+        data: { name: "Uncategorized", user: { connect: { id: profile.id } } },
+      });
+    }
     return profile;
   }
 );

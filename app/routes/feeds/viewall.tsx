@@ -1,4 +1,3 @@
-import type { Item } from "@prisma/client";
 import type { LoaderFunction } from "@remix-run/node";
 import { prisma } from "~/db.server";
 import { auth } from "~/utils/auth.server";
@@ -6,7 +5,7 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import React from "react";
 import ViewFeeds from "~/components/ViewFeeds";
-export type DisplayItem = Item & { feedTitle: string };
+import type { DisplayItem } from "~/types/DisplayItem";
 type LoaderData = { items: DisplayItem[] };
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await auth.isAuthenticated(request, {

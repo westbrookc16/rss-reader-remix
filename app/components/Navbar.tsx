@@ -1,13 +1,13 @@
-import type { Feed } from "@prisma/client";
 import { Link } from "@remix-run/react";
 import { Form } from "@remix-run/react";
 import type { Auth0Profile } from "remix-auth-auth0";
+import type { CatWithUnreadCount } from "~/types/CatWithUnreadCount";
 export default function Navbar({
   user,
-  feeds,
+  cats,
 }: {
   user: Auth0Profile | null;
-  feeds: Feed[] | null;
+  cats: CatWithUnreadCount[] | null;
 }) {
   return (
     <div>
@@ -19,10 +19,12 @@ export default function Navbar({
           <Link to="/feeds/view">View Unread Items</Link>
           <Link to="/feeds/viewall">View All Items</Link>
           <Link to="/feeds/addfeed">add Feed</Link>
-          {feeds?.map((f) => {
+
+          <Link to="/feeds/manage">Manage Categories</Link>
+          {cats?.map((f) => {
             return (
-              <Link key={f.id} to={`/feeds/view/${f.id}`}>
-                {f.title}
+              <Link key={f.id} to={`/cats/view/${f.id}/unread`}>
+                {f.name}({f.unreadCount})
               </Link>
             );
           })}

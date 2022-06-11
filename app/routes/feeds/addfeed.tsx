@@ -1,9 +1,26 @@
 import invariant from "tiny-invariant";
-import { Form, useActionData, useTransition } from "@remix-run/react";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useTransition,
+} from "@remix-run/react";
 import { prisma } from "~/db.server";
-import type { ActionFunction } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { auth } from "~/utils/auth.server";
+import type { Category } from "@prisma/client";
+type LoaderData = { cats: Category[] };
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await auth.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+  const cats = await prisma.category.findMany({
+    where: { userId: user.id },
+    orderBy: [{ name: "asc" }],
+  });
+  return json<LoaderData>({ cats });
+};
 export const action: ActionFunction = async ({ request }) => {
   const Parser = require("rss-parser");
   const parser = new Parser();
@@ -13,7 +30,12 @@ export const action: ActionFunction = async ({ request }) => {
   });
   const data = await request.formData();
   const url = data.get("url");
+  const category = data.get("category");
   invariant(url && typeof url === "string", "url must be a string");
+  invariant(
+    category && typeof category === "string",
+    "category must be a string"
+  );
   let rssFeed;
   try {
     rssFeed = await parser.parseURL(url);
@@ -31,19 +53,30 @@ export const action: ActionFunction = async ({ request }) => {
 
   invariant(feed, "There must be a feed to subscribe to.");
   await prisma.subscribe.create({
-    data: { feedId: feed.id, userId: user.id },
+    data: { feedId: feed.id, userId: user.id, categoryId: parseInt(category) },
   });
   return json({ success: true }, 200);
 };
 export default function AddFeed() {
   const transition = useTransition();
   const { success } = useActionData() || false;
+  const { cats } = useLoaderData<LoaderData>();
   return (
     <div>
       <h1>Add Feed</h1>
       <Form method="post">
         <label htmlFor="url">URL</label>
         <input type="text" id="url" name="url" />
+        <label htmlFor="category">Category</label>
+        <select id="caegory" name="category">
+          {cats.map((c) => {
+            return (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            );
+          })}
+        </select>
         <button type="submit">add Feed</button>
       </Form>
       {success && transition.state === "idle" && (
