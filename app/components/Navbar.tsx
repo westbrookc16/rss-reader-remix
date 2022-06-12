@@ -11,6 +11,7 @@ export default function Navbar({
 }) {
   return (
     <div>
+      <Link to="/">Home</Link>
       {user && (
         <div>
           <Form method="post" action="/logout">
