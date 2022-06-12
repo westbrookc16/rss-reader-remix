@@ -13,7 +13,8 @@ datasource db {
 model User {
   id    String @id
   email String
-
+accessToken String?
+requestToken String?
   Subscribe Subscribe[]
   ReadItem  ReadItem[]
   Category  Category[]

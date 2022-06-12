@@ -72,7 +72,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 export default function Manage() {
   const { feeds, categories } = useLoaderData<LoaderData>();
-  const { success, msg } = useActionData<ActionData>() || {
+  const { msg } = useActionData<ActionData>() || {
     success: false,
     msg: "",
   };

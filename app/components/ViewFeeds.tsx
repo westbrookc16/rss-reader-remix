@@ -1,6 +1,13 @@
 import type { DisplayItem } from "~/types/DisplayItem";
 import React from "react";
-export default function ViewFeeds({ items }: { items: DisplayItem[] }) {
+import { Form } from "@remix-run/react";
+export default function ViewFeeds({
+  items,
+  accessToken,
+}: {
+  items: DisplayItem[];
+  accessToken: string | null;
+}) {
   let flag: number = 0;
   let title: string = "";
   return (
@@ -19,7 +26,16 @@ export default function ViewFeeds({ items }: { items: DisplayItem[] }) {
                   {i.title}
                 </a>
               </h3>
+              {accessToken && (
+                <Form method="post">
+                  <input type="hidden" name="title" value={i.title} />
+                  <input type="hidden" name="url" value={i.url} />
 
+                  <button type="submit" name="_action" value="pocket">
+                    Add to Pocket
+                  </button>
+                </Form>
+              )}
               <div dangerouslySetInnerHTML={{ __html: i.description }} />
             </React.Fragment>
           );
@@ -33,7 +49,16 @@ export default function ViewFeeds({ items }: { items: DisplayItem[] }) {
                   {i.title}
                 </a>
               </h3>
+              {accessToken && (
+                <Form method="post">
+                  <input type="hidden" name="title" value={i.title} />
+                  <input type="hidden" name="url" value={i.url} />
 
+                  <button type="submit" name="_action" value="pocket">
+                    Add to Pocket
+                  </button>
+                </Form>
+              )}
               <div dangerouslySetInnerHTML={{ __html: i.description }} />
             </React.Fragment>
           );

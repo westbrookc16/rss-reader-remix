@@ -21,6 +21,7 @@ export default function Navbar({
           <Link to="/feeds/addfeed">add Feed</Link>
 
           <Link to="/feeds/manage">Manage Categories</Link>
+          <Link to="/pocket">Connect to Pocket</Link>
           {cats?.map((f) => {
             return (
               <Link key={f.id} to={`/cats/view/${f.id}/unread`}>
