@@ -7,7 +7,13 @@ import { auth } from "~/utils/auth.server";
 import { useActionData, useLoaderData, useTransition } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { addToPocket } from "~/utils/pocket.server";
-type LoaderData = { items: DisplayItem[]; accessToken: string | null };
+
+import { addToInstapaper } from "~/utils/instapaper.server";
+type LoaderData = {
+  items: DisplayItem[];
+  accessToken: string | null;
+  instapaperUser: string | null;
+};
 type ActionData = { msg: string };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -16,16 +22,29 @@ export const action: ActionFunction = async ({ request }) => {
   });
   const data = await request.formData();
   const _action = data.get("_action");
+  const url = data.get("url");
+  const title = data.get("title");
+  invariant(title && typeof title === "string", "title must be a string");
+  invariant(url && typeof url === "string", "url must be a string");
+  const dbUser = await prisma.user.findFirst({ where: { id: user.id } });
+  invariant(dbUser, "User not found.");
+
   if (_action === "pocket") {
-    const url = data.get("url");
-    const title = data.get("title");
-    invariant(title && typeof title === "string", "title must be a string");
-    invariant(url && typeof url === "string", "url must be a string");
-    const dbUser = await prisma.user.findFirst({ where: { id: user.id } });
-    invariant(dbUser, "User not found.");
     invariant(dbUser.accessToken, "Access Token NOt Found.");
     const { accessToken } = dbUser;
     addToPocket(accessToken, title, url);
+    return json<ActionData>({ msg: "Your story was added successfully." });
+  } else if (_action === "instapaper") {
+    const { instapaperUser, instapaperPassword } = dbUser;
+    invariant(
+      instapaperUser && typeof instapaperUser === "string",
+      "instapaper user must be found."
+    );
+    invariant(
+      typeof instapaperPassword === "string",
+      "password must be a string"
+    );
+    addToInstapaper(instapaperUser, instapaperPassword, url, title);
     return json<ActionData>({ msg: "Your story was added successfully." });
   }
 };
@@ -40,7 +59,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   //get access token
   const dbUser = await prisma.user.findFirst({ where: { id: user.id } });
   invariant(dbUser, "User not found.");
-  const { accessToken } = dbUser;
+  const { accessToken, instapaperUser } = dbUser;
   if (status === "unread") {
     if (parseInt(id) > 0)
       items = await prisma.$queryRaw<
@@ -78,15 +97,19 @@ export const loader: LoaderFunction = async ({ params, request }) => {
       });
     }
   }
-  return json<LoaderData>({ items, accessToken });
+  return json<LoaderData>({ items, accessToken, instapaperUser });
 };
 export default function ViewFeed() {
-  const { items, accessToken } = useLoaderData<LoaderData>();
+  const { items, accessToken, instapaperUser } = useLoaderData<LoaderData>();
   const transition = useTransition();
   const { msg } = useActionData<ActionData>() || { msg: "" };
   return (
     <div>
-      <ViewFeeds items={items} accessToken={accessToken} />
+      <ViewFeeds
+        items={items}
+        accessToken={accessToken}
+        instapaperUser={instapaperUser}
+      />
       {transition.state === "idle" && <div role="alert">{msg}</div>}
     </div>
   );

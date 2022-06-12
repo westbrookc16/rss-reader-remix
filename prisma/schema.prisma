@@ -15,6 +15,8 @@ model User {
   email String
 accessToken String?
 requestToken String?
+instapaperUser String?
+instapaperPassword String?
   Subscribe Subscribe[]
   ReadItem  ReadItem[]
   Category  Category[]

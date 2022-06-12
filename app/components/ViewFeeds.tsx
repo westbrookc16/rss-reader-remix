@@ -4,9 +4,11 @@ import { Form } from "@remix-run/react";
 export default function ViewFeeds({
   items,
   accessToken,
+  instapaperUser,
 }: {
   items: DisplayItem[];
   accessToken: string | null;
+  instapaperUser: string | null;
 }) {
   let flag: number = 0;
   let title: string = "";
@@ -26,14 +28,21 @@ export default function ViewFeeds({
                   {i.title}
                 </a>
               </h3>
-              {accessToken && (
+              {(accessToken || instapaperUser) && (
                 <Form method="post">
                   <input type="hidden" name="title" value={i.title} />
                   <input type="hidden" name="url" value={i.url} />
 
-                  <button type="submit" name="_action" value="pocket">
-                    Add to Pocket
-                  </button>
+                  {accessToken && (
+                    <button type="submit" name="_action" value="pocket">
+                      Add to Pocket
+                    </button>
+                  )}
+                  {instapaperUser && (
+                    <button type="submit" name="_action" value="instapaper">
+                      Add to Instapaper
+                    </button>
+                  )}
                 </Form>
               )}
               <div dangerouslySetInnerHTML={{ __html: i.description }} />
@@ -49,14 +58,22 @@ export default function ViewFeeds({
                   {i.title}
                 </a>
               </h3>
-              {accessToken && (
+              {(accessToken || instapaperUser) && (
                 <Form method="post">
                   <input type="hidden" name="title" value={i.title} />
                   <input type="hidden" name="url" value={i.url} />
 
-                  <button type="submit" name="_action" value="pocket">
-                    Add to Pocket
-                  </button>
+                  {accessToken && (
+                    <button type="submit" name="_action" value="pocket">
+                      Add to Pocket
+                    </button>
+                  )}
+
+                  {instapaperUser && (
+                    <button type="submit" name="_action" value="instapaper">
+                      Add to Instapaper
+                    </button>
+                  )}
                 </Form>
               )}
               <div dangerouslySetInnerHTML={{ __html: i.description }} />
