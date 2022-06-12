@@ -15,7 +15,11 @@ import Navbar from "./components/Navbar";
 
 import { prisma } from "./db.server";
 import type { CatWithUnreadCount } from "./types/CatWithUnreadCount";
+import styles from "./styles/app.css";
 
+export function links() {
+  return [{ rel: "stylesheet", href: styles }];
+}
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
   title: "New Remix App",
