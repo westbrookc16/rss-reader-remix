@@ -47,9 +47,11 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="flex flex-col w-full items-center">
         <Navbar user={user} cats={cats} />
-        <Outlet />
+        <main className=" px-5 xl:px-6 py-6 xl:py-12 max-w-5xl flex flex-col justify-center">
+          <Outlet />
+        </main>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

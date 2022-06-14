@@ -3,17 +3,17 @@
 @tailwind utilities;
 
 @layer components {
-  .btn-indigo-700 {
-    @apply rounded-md border-2 border-indigo-700 bg-transparent py-1 px-4 font-semibold text-indigo-700 transition-all duration-200 hover:bg-indigo-700 hover:text-white hover:shadow-md focus:bg-indigo-700 focus:text-white focus:shadow-md;
+  .btn-sky-600 {
+    @apply w-fit rounded-md bg-sky-600 py-1 px-4 font-semibold text-white transition-all duration-200 hover:bg-sky-800 hover:shadow focus:bg-sky-800 focus:shadow;
   }
 
-  .btn-teal-700 {
-    @apply rounded-md border-2 border-teal-700 bg-transparent py-1 px-4 font-semibold text-teal-700 transition-all duration-200 hover:bg-teal-700 hover:text-white hover:shadow-md focus:bg-teal-700 focus:text-white focus:shadow-md;
+  .btn-emerald-600 {
+    @apply rounded-md border-2 border-emerald-600 bg-transparent py-1 px-4 font-semibold text-emerald-600 transition-all duration-200 hover:bg-emerald-600 hover:text-white hover:shadow-md focus:bg-emerald-600 focus:text-white focus:shadow-md;
   }
 
   input,
   textarea {
-    @apply rounded-md border-2 border-indigo-600 px-3 py-1;
+    @apply rounded-md border-2 border-sky-600 px-3 py-1;
   }
 
   label {
@@ -21,6 +21,170 @@
   }
 
   h1 {
-    @apply text-center text-2xl font-extrabold uppercase tracking-tight text-teal-600 drop-shadow-md md:text-4xl;
+    @apply text-center text-2xl font-extrabold uppercase tracking-tight text-emerald-600 drop-shadow-md md:text-4xl;
+  }
+
+  .header {
+    margin: 0 auto 1rem;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .header .logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .header .logo img {
+    margin-right: 1rem;
+    width: 40px;
+    height: 40px;
+  }
+  .header a {
+    border-bottom: none;
+    color: #333;
+    position: relative;
+    padding: 0.5rem 0 0.25rem;
+    font-weight: 700;
+  }
+
+  @media screen and (min-width: 55rem) {
+    .header {
+      padding: 0;
+      margin: 1rem auto;
+      font-size: 1.15rem;
+    }
+    .header .logo {
+      font-size: 1.5rem;
+      margin-bottom: 0;
+    }
+    .header .logo img {
+      width: 70px;
+      height: 70px;
+    }
+  }
+  /* ---------
+ * Menu styles
+ */
+  .menu::before {
+    content: "";
+    position: fixed;
+    z-index: 1;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.3s ease-out;
+  }
+
+  .menu_list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    max-width: 20rem;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    margin: 0;
+    background-color: #f2f2f2;
+    transition: 0.4s;
+    padding-top: 60px;
+    visibility: hidden;
+    transform: translateX(100%);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+  .menu_list_inner {
+    list-style: none;
+    display: flex;
+    flex-direction: inherit;
+  }
+
+  .has-open-menu .menu::before {
+    visibility: visible;
+    opacity: 1;
+  }
+  .has-open-menu .menu_list {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .menu_button--close {
+    position: absolute;
+    top: 1rem;
+    right: 1.75rem;
+    font-size: 2.5rem;
+  }
+  .menu_button--open {
+    font-size: 2rem;
+  }
+
+  .menu_item {
+    padding: 0.7rem 0;
+  }
+
+  .menu a {
+    margin: 0 0.75rem;
+    border-bottom: 5px solid transparent;
+    transition: border-bottom-color 0.3s ease-out;
+  }
+
+  .menu a[aria-current],
+  .menu a:hover {
+    border-bottom-color: var(--color-light);
+  }
+
+  @media screen and (min-width: 55rem) {
+    .menu_list {
+      max-width: 100%;
+      height: auto;
+      transform: translateX(0);
+      visibility: visible;
+      position: static;
+      background-color: transparent;
+      flex-wrap: wrap;
+      flex-direction: row;
+      padding-top: 0;
+    }
+
+    .has-open-menu .menu::before {
+      display: none;
+    }
+    .has-open-menu .menu_list {
+      transform: translateX(0);
+      visibility: visible;
+    }
+
+    .menu_button {
+      display: none;
+    }
+
+    .menu a {
+      margin: 0 1.5rem;
+    }
+
+    .header {
+      padding: 0;
+      margin: 1rem auto;
+      font-size: 1.15rem;
+    }
+    .header .logo {
+      font-size: 1.5rem;
+      margin-bottom: 0;
+    }
+    .header .logo img {
+      width: 70px;
+      height: 70px;
+    }
   }
 }
