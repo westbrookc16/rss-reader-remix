@@ -13,7 +13,7 @@ export default function ViewFeeds({
   let flag: number = 0;
   let title: string = "";
   return (
-    <div>
+    <div className="flex flex-col gap-y-6 justify-center items-center">
       <h1>View Feeds</h1>
       {items.map((i) => {
         if (i.feedTitle !== title) {
@@ -22,62 +22,100 @@ export default function ViewFeeds({
         }
         if (flag > 0)
           return (
-            <React.Fragment key={i.id}>
+            <div
+              key={i.id}
+              className="max-w-sm flex flex-col gap-y-2 justify-center items-center border-b-2 border-sky-600 pb-4"
+            >
               <h3>
                 <a target="_blank" rel="noreferrer" href={`${i.url}`}>
                   {i.title}
                 </a>
               </h3>
               {(accessToken || instapaperUser) && (
-                <Form method="post">
+                <Form
+                  className="flex justify-center items-center gap-x-2 py-2"
+                  method="post"
+                >
                   <input type="hidden" name="title" value={i.title} />
                   <input type="hidden" name="url" value={i.url} />
 
                   {accessToken && (
-                    <button type="submit" name="_action" value="pocket">
+                    <button
+                      type="submit"
+                      className="btn-sky-600"
+                      name="_action"
+                      value="pocket"
+                    >
                       Add to Pocket
                     </button>
                   )}
                   {instapaperUser && (
-                    <button type="submit" name="_action" value="instapaper">
+                    <button
+                      type="submit"
+                      className="btn-emerald-600"
+                      name="_action"
+                      value="instapaper"
+                    >
                       Add to Instapaper
                     </button>
                   )}
                 </Form>
               )}
-              <div dangerouslySetInnerHTML={{ __html: i.description }} />
-            </React.Fragment>
+              <div
+                className="px-3 lg:px-5 max-w-full w-full flex flex-col gap-3 article-content"
+                dangerouslySetInnerHTML={{ __html: i.description }}
+              />
+            </div>
           );
         else {
           flag++;
           return (
-            <React.Fragment key={i.id}>
-              <h2>{i.feedTitle}</h2>
+            <div
+              key={i.id}
+              className="max-w-sm flex flex-col gap-y-2 justify-center items-center border-b-2 border-sky-600 pb-4"
+            >
+              <h2 className="mb-4">{i.feedTitle}</h2>
               <h3>
                 <a target="_blank" rel="noreferrer" href={`${i.url}`}>
                   {i.title}
                 </a>
               </h3>
               {(accessToken || instapaperUser) && (
-                <Form method="post">
+                <Form
+                  className="flex justify-center items-center gap-x-2 py-2"
+                  method="post"
+                >
                   <input type="hidden" name="title" value={i.title} />
                   <input type="hidden" name="url" value={i.url} />
 
                   {accessToken && (
-                    <button type="submit" name="_action" value="pocket">
+                    <button
+                      type="submit"
+                      className="btn-sky-600"
+                      name="_action"
+                      value="pocket"
+                    >
                       Add to Pocket
                     </button>
                   )}
 
                   {instapaperUser && (
-                    <button type="submit" name="_action" value="instapaper">
+                    <button
+                      type="submit"
+                      className="btn-emerald-600"
+                      name="_action"
+                      value="instapaper"
+                    >
                       Add to Instapaper
                     </button>
                   )}
                 </Form>
               )}
-              <div dangerouslySetInnerHTML={{ __html: i.description }} />
-            </React.Fragment>
+              <div
+                className="px-3 lg:px-5 max-w-full w-full flex flex-col gap-3 article-content"
+                dangerouslySetInnerHTML={{ __html: i.description }}
+              />
+            </div>
           );
         } //ending if;
       })}

@@ -23,7 +23,8 @@ export function links() {
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
   title: "New Remix App",
-  viewport: "width=device-width,initial-scale=1",
+  viewport:
+    "width=device-width,initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=0",
 });
 type LoaderData = {
   user: Auth0Profile | null;
@@ -47,7 +48,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="flex flex-col w-screen items-center">
+      <body className="flex flex-col items-center">
         <Navbar user={user} cats={cats} />
         <main className=" px-5 xl:px-6 py-6 xl:py-12 max-w-5xl flex flex-col justify-center">
           <Outlet />

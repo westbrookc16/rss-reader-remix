@@ -8,11 +8,12 @@
   }
 
   .btn-emerald-600 {
-    @apply rounded-md border-2 border-emerald-600 bg-transparent py-1 px-4 font-semibold text-emerald-600 transition-all duration-200 hover:bg-emerald-600 hover:text-white hover:shadow-md focus:bg-emerald-600 focus:text-white focus:shadow-md;
+    @apply w-fit rounded-md bg-emerald-600 py-1 px-4 font-semibold text-white transition-all duration-200 hover:bg-emerald-800 hover:shadow focus:bg-emerald-800 focus:shadow;
   }
 
   input,
-  textarea {
+  textarea,
+  select {
     @apply rounded-md border-2 border-sky-600 px-3 py-1;
   }
 
@@ -23,6 +24,27 @@
   h1 {
     @apply text-center text-2xl font-extrabold uppercase tracking-tight text-emerald-600 drop-shadow-md md:text-4xl;
   }
+
+  h2 {
+    @apply text-center text-xl font-bold uppercase tracking-tight text-sky-600 drop-shadow-md md:text-2xl;
+  }
+
+  h3 {
+    @apply text-center text-base font-bold uppercase tracking-tight text-emerald-600 drop-shadow-md md:text-lg;
+  }
+
+  figure {
+    max-width: 100%;
+    height: auto;
+  }
+
+  main .article-content a {
+    @apply my-3 w-fit rounded-md bg-sky-600 py-1 px-4 font-semibold text-white transition-all duration-200 hover:bg-sky-800 hover:shadow focus:bg-sky-800 focus:shadow;
+  }
+
+  /* * {
+    border: 1px solid red;
+  } */
 
   .header {
     display: flex;

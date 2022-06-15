@@ -62,22 +62,32 @@ export default function AddFeed() {
   const { success } = useActionData() || false;
   const { cats } = useLoaderData<LoaderData>();
   return (
-    <div>
+    <div className="flex flex-col gap-y-4 justify-center items-center">
       <h1>Add Feed</h1>
-      <Form method="post">
-        <label htmlFor="url">URL</label>
-        <input type="text" id="url" name="url" />
-        <label htmlFor="category">Category</label>
-        <select id="caegory" name="category">
-          {cats.map((c) => {
-            return (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            );
-          })}
-        </select>
-        <button type="submit">add Feed</button>
+      <Form
+        className="flex flex-col gap-y-4 justify-center items-center"
+        method="post"
+      >
+        <div className="flex flex-col gap-y-2 justify-center items-center">
+          <label htmlFor="url">URL</label>
+          <input type="text" id="url" name="url" />
+        </div>
+
+        <div className="flex flex-col gap-y-2 justify-center items-center">
+          <label htmlFor="category">Category</label>
+          <select id="caegory" name="category">
+            {cats.map((c) => {
+              return (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        <button className="btn-sky-600" type="submit">
+          add Feed
+        </button>
       </Form>
       {success && transition.state === "idle" && (
         <div role="alert">Your feed was added successfully.</div>

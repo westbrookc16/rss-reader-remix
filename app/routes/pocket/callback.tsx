@@ -34,10 +34,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 export default function PocketCallback() {
   return (
-    <div>
+    <div className="flex flex-col gap-y-4 text-center justify-center items-center">
       <h1>Congratulations</h1>
-      You have connected your account to pocket. Now you can save stories to
-      your pocket account.
+      <p>
+        You have connected your account to pocket. Now you can save stories to
+        your pocket account.
+      </p>
     </div>
   );
 }

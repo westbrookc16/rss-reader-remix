@@ -48,8 +48,9 @@ export default function Navbar({
    * Close menu if focus is out of it
    */
   const menuBlur = (event) => {
+    //console.log("CHECKING EVENT", event);
     // Check if the target link is an indirect child of .menu_list
-    const targetIsIn = event.relatedTarget.closest(".menu_list");
+    const targetIsIn = event.relatedTarget?.closest(".menu_list");
 
     if (
       document.documentElement.classList.contains("has-open-menu") &&

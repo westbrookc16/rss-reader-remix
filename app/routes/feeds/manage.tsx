@@ -85,43 +85,64 @@ export default function Manage() {
     );
   });
   return (
-    <div>
-      <Form method="post">
-        <fieldset>
-          <legend>Add Category</legend>
+    <div className="flex flex-col justify-center items-center gap-y-4 text-center">
+      <h1>Manage Categories</h1>
+      <Form
+        className="flex flex-col justify-center items-center gap-y-4 "
+        method="post"
+      >
+        <h2>Add Category</h2>
+        <div className="flex flex-col justify-center items-center gap-y-2 ">
           <label htmlFor="name">Name</label>
 
           <input type="text" name="category" id="name" />
-          <button type="submit" name="_action" value="add">
-            Add
-          </button>
-        </fieldset>
+        </div>
+        <button
+          className="btn-sky-600"
+          type="submit"
+          name="_action"
+          value="add"
+        >
+          Add
+        </button>
       </Form>
 
       {transition.state === "idle" && <div role="alert">{msg}</div>}
       {categories.length > 0 && (
-        <div>
+        <>
+          <h2>Assign Feed to Category</h2>
           {feeds.map((f) => {
             if (f.categoryId === null) f.categoryId = -1;
 
             return (
-              <Form method="post" key={f.id}>
-                <label htmlFor={`category${f.id}`}>{f.title}</label>
-                <select
-                  id={`category${f.id}`}
-                  defaultValue={f.categoryId}
-                  name="category"
-                >
-                  {options}
-                </select>
+              <Form
+                className="flex flex-col justify-center items-center gap-y-4 "
+                method="post"
+                key={f.id}
+              >
+                <div className="flex flex-col justify-center items-center gap-y-2 ">
+                  <label htmlFor={`category${f.id}`}>{f.title}</label>
+                  <select
+                    id={`category${f.id}`}
+                    defaultValue={f.categoryId}
+                    name="category"
+                  >
+                    {options}
+                  </select>
+                </div>
                 <input type="hidden" name="feed" value={f.id} />
-                <button type="submit" name="_action" value="change">
+                <button
+                  className="btn-sky-600"
+                  type="submit"
+                  name="_action"
+                  value="change"
+                >
                   Update
                 </button>
               </Form>
             );
           })}
-        </div>
+        </>
       )}
     </div>
   );

@@ -31,12 +31,12 @@ export const action: ActionFunction = async ({ request }) => {
 };
 export default function PocketIndex() {
   return (
-    <div>
+    <div className="flex flex-col gap-y-4 text-center justify-center items-center">
       <h1>Connect Pocket</h1>
-      Pocket is a way to save articles for later reading.
+      <p>Pocket is a way to save articles for later reading.</p>
       <Form method="post">
-        <button type="submit">
-          Click here to connect accessible-rss.com to pocket.
+        <button type="submit" className="btn-sky-600 max-w-[280px]">
+          Click here to connect accessible-rss.com to pocket
         </button>
       </Form>
     </div>
