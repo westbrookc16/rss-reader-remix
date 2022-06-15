@@ -21,10 +21,7 @@ const sessionStorage = createCookieSessionStorage({
     secrets: [SECRETS],
     secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 60 * 24 * 30,
-    domain:
-      process.env.NODE_ENV === "production"
-        ? process.env.AUTH0_DOMAIN
-        : "localhost",
+    domain: process.env.DOMAIN,
   },
 });
 

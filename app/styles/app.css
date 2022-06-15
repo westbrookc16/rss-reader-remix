@@ -558,40 +558,6 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
-.container {
-  width: 100%;
-}
-
-@media (min-width: 640px) {
-  .container {
-    max-width: 640px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    max-width: 768px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container {
-    max-width: 1024px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container {
-    max-width: 1280px;
-  }
-}
-
-@media (min-width: 1536px) {
-  .container {
-    max-width: 1536px;
-  }
-}
-
 .btn-sky-600 {
   width: -webkit-fit-content;
   width: -moz-fit-content;
@@ -666,8 +632,6 @@ h1 {
 }
 
 .header {
-  margin: 0 auto 1rem;
-  padding: 0 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -687,19 +651,20 @@ h1 {
   height: 40px;
 }
 
-.header a {
+.header a,
+  .header button:not(.menu_button) {
   border-bottom: none;
-  color: #333;
   position: relative;
-  padding: 0.5rem 0 0.25rem;
+  padding: 0.2rem 0 0.1rem;
   font-weight: 700;
 }
 
-@media screen and (min-width: 55rem) {
+@media screen and (min-width: 58rem) {
   .header {
     padding: 0;
-    margin: 1rem auto;
-    font-size: 1.15rem;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
   }
 
   .header .logo {
@@ -743,7 +708,6 @@ h1 {
   top: 0;
   right: 0;
   margin: 0;
-  background-color: #f2f2f2;
   transition: 0.4s;
   padding-top: 60px;
   visibility: hidden;
@@ -754,9 +718,12 @@ h1 {
 }
 
 .menu_list_inner {
-  list-style: none;
   display: flex;
   flex-direction: inherit;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 0;
 }
 
 .has-open-menu .menu::before {
@@ -781,21 +748,24 @@ h1 {
 }
 
 .menu_item {
-  padding: 0.7rem 0;
+  display: flex;
 }
 
-.menu a {
+.menu a,
+  .menu button:not(.menu_button) {
   margin: 0 0.75rem;
-  border-bottom: 5px solid transparent;
+  border-bottom: 2px solid transparent;
   transition: border-bottom-color 0.3s ease-out;
 }
 
 .menu a[aria-current],
-  .menu a:hover {
+  .menu a:hover,
+  .menu button[aria-current]:not(.menu_button),
+  .menu button:hover:not(.menu_button) {
   border-bottom-color: var(--color-light);
 }
 
-@media screen and (min-width: 55rem) {
+@media screen and (min-width: 58rem) {
   .menu_list {
     max-width: 100%;
     height: auto;
@@ -806,6 +776,16 @@ h1 {
     flex-wrap: wrap;
     flex-direction: row;
     padding-top: 0;
+  }
+
+  .menu_list_inner {
+    margin: auto;
+  }
+
+  .menu_item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .has-open-menu .menu::before {
@@ -821,14 +801,14 @@ h1 {
     display: none;
   }
 
-  .menu a {
+  .menu a,
+    .menu button:not(.menu_button) {
     margin: 0 1.5rem;
   }
 
   .header {
     padding: 0;
-    margin: 1rem auto;
-    font-size: 1.15rem;
+    font-size: 1rem;
   }
 
   .header .logo {
@@ -842,6 +822,15 @@ h1 {
   }
 }
 
+.m-2 {
+  margin: 0.5rem;
+}
+
+.mx-4 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
 .mb-6 {
   margin-bottom: 1.5rem;
 }
@@ -852,6 +841,10 @@ h1 {
 
 .hidden {
   display: none;
+}
+
+.w-screen {
+  width: 100vw;
 }
 
 .w-full {
@@ -900,6 +893,11 @@ h1 {
   background-color: rgb(2 132 199 / var(--tw-bg-opacity));
 }
 
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
 .bg-emerald-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(5 150 105 / var(--tw-bg-opacity));
@@ -936,6 +934,17 @@ h1 {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.text-black {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity));
+}
+
+.shadow-md {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .drop-shadow-md {
