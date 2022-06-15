@@ -1,11 +1,11 @@
 // @ts-nocheck
-
 import { Link } from "@remix-run/react";
 import { Form } from "@remix-run/react";
 import type { Auth0Profile } from "remix-auth-auth0";
 import type { CatWithUnreadCount } from "~/types/CatWithUnreadCount";
 
 import { useRef, useEffect } from "react";
+
 export default function Navbar({
   user,
   cats,

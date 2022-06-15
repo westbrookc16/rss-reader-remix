@@ -75,7 +75,7 @@ export default function AddFeed() {
 
         <div className="flex flex-col gap-y-2 justify-center items-center">
           <label htmlFor="category">Category</label>
-          <select id="caegory" name="category">
+          <select id="category" name="category">
             {cats.map((c) => {
               return (
                 <option key={c.id} value={c.id}>
