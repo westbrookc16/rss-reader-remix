@@ -54,8 +54,23 @@ export const action: ActionFunction = async ({ request }) => {
       success: true,
       msg: "Category Changed Successfully.",
     });
+  } else if (_action === "delete") {
+    invariant(feed && typeof feed === "string", "Feed must be a string");
+    await prisma.subscribe.deleteMany({
+      where: { feedId: parseInt(feed), userId: user.id },
+    });
+    const doesFeedExist = await prisma.subscribe.findMany({
+      where: { feedId: parseInt(feed) },
+    });
+    if (doesFeedExist.length === 0) {
+      await prisma.item.deleteMany({ where: { feedId: parseInt(feed) } });
+      await prisma.feed.delete({ where: { id: parseInt(feed) } });
+      return json<ActionData>({
+        success: true,
+        msg: "Your category was deleted successfully.",
+      });
+    }
   }
-
   return json<ActionData>({ success: true });
 };
 export const loader: LoaderFunction = async ({ request }) => {
@@ -138,6 +153,15 @@ export default function Manage() {
                   value="change"
                 >
                   Update
+                </button>
+
+                <button
+                  className="btn-sky-600"
+                  type="submit"
+                  name="_action"
+                  value="delete"
+                >
+                  Delete {f.title}
                 </button>
               </Form>
             );
