@@ -152,6 +152,14 @@ export default function Navbar({
                   <div className="menu_item">
                     <Link to="/feeds/manage">Manage Categories</Link>
                   </div>
+
+                  <div className="menu_item">
+                    <Link to="/generateopml">Export to OPML</Link>
+                  </div>
+
+                  <div className="menu_item">
+                    <Link to="/uploadopml">Import OPML File</Link>
+                  </div>
                 </>
               )}
             </div>
