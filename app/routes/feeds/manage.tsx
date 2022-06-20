@@ -67,9 +67,14 @@ export const action: ActionFunction = async ({ request }) => {
       await prisma.feed.delete({ where: { id: parseInt(feed) } });
       return json<ActionData>({
         success: true,
-        msg: "Your category was deleted successfully.",
+        msg: "Your feed was deleted successfully.",
       });
     }
+
+    return json<ActionData>({
+      success: true,
+      msg: "Your feed was deleted successfully.",
+    });
   }
   return json<ActionData>({ success: true });
 };
