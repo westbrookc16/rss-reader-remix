@@ -92,6 +92,10 @@ export default function AddFeed() {
       {success && transition.state === "idle" && (
         <div role="alert">Your feed was added successfully.</div>
       )}
+
+      <div role="alert" className="sr-only">
+        Add Feed Loaded
+      </div>
     </div>
   );
 }

@@ -82,6 +82,10 @@ export default function View() {
       />
 
       {transition.state === "idle" && <div role="alert">{msg}</div>}
+
+      <div role="alert" className="sr-only">
+        View All Items Loaded
+      </div>
     </div>
   );
 }

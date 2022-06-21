@@ -173,6 +173,9 @@ export default function Manage() {
           })}
         </>
       )}
+      <div role="alert" className="sr-only">
+        Manage Categories Loaded
+      </div>
     </div>
   );
 }

@@ -83,6 +83,10 @@ export default function View() {
         instapaperUser={instapaperUser}
       />
       {transition.state === "idle" && <div role="alert">{msg}</div>}
+
+      <div role="alert" className="sr-only">
+        View Unread Items Loaded
+      </div>
     </div>
   );
 }

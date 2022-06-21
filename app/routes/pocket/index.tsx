@@ -39,6 +39,10 @@ export default function PocketIndex() {
           Click here to connect accessible-rss.com to pocket
         </button>
       </Form>
+
+      <div role="alert" className="sr-only">
+        Pocket Loaded
+      </div>
     </div>
   );
 }

@@ -36,29 +36,39 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function InstapaperFields() {
   const { email } = useLoaderData<LoaderData>();
   return (
-    <Form
-      className="flex flex-col gap-y-4 justify-center items-center text-center"
-      method="post"
-    >
-      <h1>Instapaper Credentials</h1>
-      <div className="flex flex-col justify-center items-center gap-y-2">
-        <label htmlFor="instapaperUser">Username/Email</label>
-        <input
-          type="text"
-          name="instapaperUser"
-          id="instapaperUser"
-          defaultValue={email}
-        />
-      </div>
+    <>
+      <Form
+        className="flex flex-col gap-y-4 justify-center items-center text-center"
+        method="post"
+      >
+        <h1>Instapaper Credentials</h1>
+        <div className="flex flex-col justify-center items-center gap-y-2">
+          <label htmlFor="instapaperUser">Username/Email</label>
+          <input
+            type="text"
+            name="instapaperUser"
+            id="instapaperUser"
+            defaultValue={email}
+          />
+        </div>
 
-      <div className="flex flex-col justify-center items-center gap-y-2">
-        <label htmlFor="instapaperPassword">Password (if you have one)</label>
-        <input type="text" id="instapaperPassword" name="instapaperPassword" />
-      </div>
+        <div className="flex flex-col justify-center items-center gap-y-2">
+          <label htmlFor="instapaperPassword">Password (if you have one)</label>
+          <input
+            type="text"
+            id="instapaperPassword"
+            name="instapaperPassword"
+          />
+        </div>
 
-      <button type="submit" className="btn-sky-600">
-        Submit
-      </button>
-    </Form>
+        <button type="submit" className="btn-sky-600">
+          Submit
+        </button>
+      </Form>
+
+      <div role="alert" className="sr-only">
+        Instapaper Loaded
+      </div>
+    </>
   );
 }

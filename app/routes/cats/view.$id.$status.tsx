@@ -64,9 +64,9 @@ export const loader: LoaderFunction = async ({ params, request }) => {
     if (parseInt(id) > 0)
       items = await prisma.$queryRaw<
         DisplayItem[]
-      >`select f."title" as "feedTitle", i.* from "Item" i inner join "Feed" f on f.id=i."feedId" inner join "Subscribe" s on s."feedId"=i."feedId" and s."userId"=${
+      >`select f."title" as "feedTitle", c.name as "categoryName", i.* from "Item" i inner join "Feed" f on f.id=i."feedId" inner join "Subscribe" s on s."feedId"=i."feedId" and s."userId"=${
         user.id
-      } left outer join "ReadItem" r on r."itemId"=i."id" and r."userId"=s."userId" where r."itemId" is null and s."categoryId"=${parseInt(
+      } inner join "Category" c on c.id=s."categoryId" left outer join "ReadItem" r on r."itemId"=i."id" and r."userId"=s."userId" where r."itemId" is null and s."categoryId"=${parseInt(
         id
       )} order by f."title",i."createdAt" desc`;
     else
@@ -77,9 +77,9 @@ export const loader: LoaderFunction = async ({ params, request }) => {
     if (parseInt(id) > 0)
       items = await prisma.$queryRaw<
         DisplayItem[]
-      >`select f."title" as "feedTitle", i.* from "Item" i inner join "Feed" f on f.id=i."feedId" inner join "Subscribe" s on s."feedId"=i."feedId" and s."userId"=${
+      >`select f."title" as "feedTitle", i.*, c.name as "categoryName" from "Item" i inner join "Feed" f on f.id=i."feedId" inner join "Subscribe" s on s."feedId"=i."feedId" and s."userId"=${
         user.id
-      } where s."categoryId"=${parseInt(
+      } inner join "Category" c on c.id=s."categoryId" where s."categoryId"=${parseInt(
         id
       )} order by f."title",i."createdAt" desc`;
     else
@@ -111,6 +111,10 @@ export default function ViewFeed() {
         instapaperUser={instapaperUser}
       />
       {transition.state === "idle" && <div role="alert">{msg}</div>}
+
+      <div role="alert" className="sr-only">
+        {items[0]?.categoryName} loaded
+      </div>
     </div>
   );
 }
