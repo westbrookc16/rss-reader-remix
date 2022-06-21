@@ -19,14 +19,20 @@ export default function Screen() {
   const { error } = useLoaderData<LoaderData>();
 
   return (
-    <Form
-      className="flex flex-col max-w-xs gap-y-6 items-center text-center"
-      method="post"
-      action="/auth0"
-    >
-      {error ? <div>{error.message}</div> : null}
-      Click the button below to log in with google or an email and password.
-      <button className="btn-sky-600">Sign In with Auth0</button>
-    </Form>
+    <>
+      <Form
+        className="flex flex-col max-w-xs gap-y-6 items-center text-center"
+        method="post"
+        action="/auth0"
+      >
+        {error ? <div>{error.message}</div> : null}
+        Click the button below to log in with google or an email and password.
+        <button className="btn-sky-600">Sign In with Auth0</button>
+      </Form>
+
+      <div role="alert" className="sr-only">
+        Login Loaded
+      </div>
+    </>
   );
 }

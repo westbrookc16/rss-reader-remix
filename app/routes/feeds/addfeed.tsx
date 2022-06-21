@@ -21,6 +21,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   });
   return json<LoaderData>({ cats });
 };
+type ActionData = { msg: string };
 export const action: ActionFunction = async ({ request }) => {
   const Parser = require("rss-parser");
   const parser = new Parser();
@@ -41,7 +42,9 @@ export const action: ActionFunction = async ({ request }) => {
     rssFeed = await parser.parseURL(url);
   } catch (e) {
     console.log(e);
-    return json({ error: "There was an error." }, 400);
+    return json<ActionData>({
+      msg: "There was an error parsing the feed. Make sure the url is correct.",
+    });
   }
   const title = rssFeed.title;
   const description = rssFeed.description;
@@ -59,7 +62,7 @@ export const action: ActionFunction = async ({ request }) => {
 };
 export default function AddFeed() {
   const transition = useTransition();
-  const { success } = useActionData() || false;
+  const { msg } = useActionData<ActionData>() || { msg: "" };
   const { cats } = useLoaderData<LoaderData>();
   return (
     <div className="flex flex-col gap-y-4 justify-center items-center">
@@ -89,9 +92,7 @@ export default function AddFeed() {
           add Feed
         </button>
       </Form>
-      {success && transition.state === "idle" && (
-        <div role="alert">Your feed was added successfully.</div>
-      )}
+      {transition.state === "idle" && <div role="alert">{msg}</div>}
 
       <div role="alert" className="sr-only">
         Add Feed Loaded
