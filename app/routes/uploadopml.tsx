@@ -1,3 +1,4 @@
+import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { ActionFunction } from "@remix-run/node";
 import {
@@ -7,7 +8,7 @@ import {
 import { Form, useActionData, useTransition } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { prisma } from "~/db.server";
-import { auth } from "~/utils/auth.server";
+import { auth, requirePaidUserId } from "~/utils/auth.server";
 
 type ActionData = { success: boolean; msg: string };
 export const action: ActionFunction = async ({ request }) => {
@@ -90,3 +91,6 @@ export default function UploadOpml() {
     </div>
   );
 }
+export const loader: LoaderFunction = async ({ request }) => {
+  await requirePaidUserId(request);
+};

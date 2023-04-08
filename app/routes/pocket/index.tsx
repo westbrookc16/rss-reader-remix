@@ -1,9 +1,9 @@
-import type { ActionFunction } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { Form } from "@remix-run/react";
 
 import { prisma } from "~/db.server";
-import { auth } from "~/utils/auth.server";
+import { auth, requirePaidUserId } from "~/utils/auth.server";
 export const action: ActionFunction = async ({ request }) => {
   const user = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
@@ -28,6 +28,9 @@ export const action: ActionFunction = async ({ request }) => {
   const redirectUri = `${process.env.BASE_URL}pocket/callback`;
   const url = `https://getpocket.com/auth/authorize?request_token=${data.code}&redirect_uri=${redirectUri}`;
   return redirect(url);
+};
+export const loader: LoaderFunction = async ({ request }) => {
+  await requirePaidUserId(request);
 };
 export default function PocketIndex() {
   return (

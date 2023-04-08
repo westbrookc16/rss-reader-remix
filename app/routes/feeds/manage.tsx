@@ -6,7 +6,7 @@ import {
 } from "@remix-run/react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { auth } from "~/utils/auth.server";
+import { auth, requirePaidUserId } from "~/utils/auth.server";
 import { prisma } from "~/db.server";
 import invariant from "tiny-invariant";
 import type { Category } from "@prisma/client";
@@ -79,9 +79,7 @@ export const action: ActionFunction = async ({ request }) => {
   return json<ActionData>({ success: true });
 };
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
+  const user = await requirePaidUserId(request);
   const feeds = await prisma.$queryRaw<
     FeedWithCategory[]
   >`select f.*, "categoryId" from "Feed" f inner join "Subscribe" s on s."feedId"=f."id" where s."userId"=${user.id}`;

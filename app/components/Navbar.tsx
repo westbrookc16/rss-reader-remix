@@ -1,16 +1,17 @@
 // @ts-nocheck
 import { Link } from "@remix-run/react";
 import { Form } from "@remix-run/react";
-import type { Auth0Profile } from "remix-auth-auth0";
+
 import type { CatWithUnreadCount } from "~/types/CatWithUnreadCount";
 
 import { useRef, useEffect } from "react";
+import type { User } from "@prisma/client";
 
 export default function Navbar({
   user,
   cats,
 }: {
-  user: Auth0Profile | null;
+  user: User | null;
   cats: CatWithUnreadCount[] | null;
 }) {
   const menu = useRef(null);
@@ -114,6 +115,19 @@ export default function Navbar({
                 </div>
               ) : (
                 <>
+                  {user.stripeSubscriptionStatus && (
+                    <div className="menu_item">
+                      <Form method="POST" action="/billing">
+                        <button role="link">Manage Subscription</button>
+                      </Form>
+                    </div>
+                  )}
+                  <div className="menu_item">
+                    {(!user?.stripeSubscriptionId ||
+                      user.stripeSubscriptionStatus === "canceled") && (
+                      <Link to="/pay">Start Free Trial</Link>
+                    )}
+                  </div>
                   <div className="menu_item">
                     <Link to="/pocket">Connect to Pocket</Link>
                   </div>

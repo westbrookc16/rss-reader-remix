@@ -4,7 +4,7 @@ import { addToInstapaper } from "~/utils/instapaper.server";
 import { addToPocket } from "~/utils/pocket.server";
 import type { LoaderFunction } from "@remix-run/node";
 import { prisma } from "~/db.server";
-import { auth } from "~/utils/auth.server";
+import { auth, requirePaidUserId } from "~/utils/auth.server";
 import { json } from "@remix-run/node";
 import { useActionData, useLoaderData, useTransition } from "@remix-run/react";
 import React from "react";
@@ -17,20 +17,18 @@ type LoaderData = {
   instapaperUser: string | null;
 };
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-  const dbUser = await prisma.user.findFirst({ where: { id: user.id } });
+  const dbUser = await requirePaidUserId(request);
+  //const dbUser = await prisma.user.findFirst({ where: { id: user.id } });
   invariant(dbUser, "User not found.");
   const { accessToken, instapaperUser } = dbUser;
   const items = await prisma.$queryRaw<
     DisplayItem[]
-  >`select f."title" as "feedTitle", i.* from "Item" i inner join "Feed" f on f.id=i."feedId" inner join "Subscribe" s on s."feedId"=i."feedId" and s."userId"=${user.id} left outer join "ReadItem" r on r."itemId"=i.id and r."userId"=${user.id} where r."itemId" is null order by f."title",i."createdAt" desc`;
+  >`select f."title" as "feedTitle", i.* from "Item" i inner join "Feed" f on f.id=i."feedId" inner join "Subscribe" s on s."feedId"=i."feedId" and s."userId"=${dbUser.id} left outer join "ReadItem" r on r."itemId"=i.id and r."userId"=${dbUser.id} where r."itemId" is null order by f."title",i."createdAt" desc`;
   //get feeds into readItems
   for (const f of items) {
     await prisma.readItem.create({
       data: {
-        user: { connect: { id: user.id } },
+        user: { connect: { id: dbUser.id } },
         item: { connect: { id: f.id } },
       },
     });

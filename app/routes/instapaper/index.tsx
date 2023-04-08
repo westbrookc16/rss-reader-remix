@@ -1,7 +1,7 @@
 import { Form, useLoaderData } from "@remix-run/react";
 import type { LoaderFunction, ActionFunction } from "@remix-run/node";
 import { redirect, json } from "@remix-run/node";
-import { auth } from "~/utils/auth.server";
+import { auth, requirePaidUserId } from "~/utils/auth.server";
 import { prisma } from "~/db.server";
 import invariant from "tiny-invariant";
 //type ActionData = { msg: string };
@@ -28,10 +28,8 @@ export const action: ActionFunction = async ({ request }) => {
   return redirect("/");
 };
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-  return json<LoaderData>({ email: user.emails[0].value });
+  const user = await requirePaidUserId(request);
+  return json<LoaderData>({ email: user.email });
 };
 export default function InstapaperFields() {
   const { email } = useLoaderData<LoaderData>();

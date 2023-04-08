@@ -3,7 +3,7 @@ import { prisma } from "~/db.server";
 import { json } from "@remix-run/node";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import type { DisplayItem } from "~/types/DisplayItem";
-import { auth } from "~/utils/auth.server";
+import { auth, requirePaidUserId } from "~/utils/auth.server";
 import { useActionData, useLoaderData, useTransition } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { addToPocket } from "~/utils/pocket.server";
@@ -50,9 +50,7 @@ export const action: ActionFunction = async ({ request }) => {
 };
 export const loader: LoaderFunction = async ({ params, request }) => {
   const { id, status } = params;
-  const user = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
+  const user = await requirePaidUserId(request);
   invariant(id, "ID must be set.");
   invariant(status && typeof status === "string", "Status must be set.");
   let items: DisplayItem[] = [];

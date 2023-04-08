@@ -10,12 +10,13 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
-import type { Auth0Profile } from "remix-auth-auth0";
+
 import Navbar from "./components/Navbar";
 
 import { prisma } from "./db.server";
 import type { CatWithUnreadCount } from "./types/CatWithUnreadCount";
 import styles from "./styles/app.css";
+import type { User } from "@prisma/client";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
@@ -27,18 +28,21 @@ export const meta: MetaFunction = () => ({
     "width=device-width,initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=0",
 });
 type LoaderData = {
-  user: Auth0Profile | null;
+  user: User | null;
   cats: CatWithUnreadCount[] | null;
 };
 export const loader: LoaderFunction = async ({ request }) => {
   let cats: CatWithUnreadCount[] = [];
   const user = await auth.isAuthenticated(request);
+  let dbUser = null;
   if (user) {
     cats = await prisma.$queryRaw<
       CatWithUnreadCount[]
     >`select case when c.id is null then -1 else c.id end as id, case when c.name is null then 'Uncategorized' else c.name end as name, coalesce(sum(unreadCount),0) as "unreadCount" from "Category" c left outer join (select c.id, count(distinct i.id) as unreadCount from "Category" c inner join "Subscribe" s on s."categoryId"=c.id  and s."userId"=${user.id} and s."userId"=c."userId" left outer join "Item" i on i."feedId"=s."feedId" left outer join "ReadItem" r on r."itemId"=i.id and r."userId"=s."userId" where r."itemId" is null group by c.id)as counts on counts.id=c.id  where c."userId"=${user.id} group by case when c.id is null then -1 else c.id end, case when c.name is null then 'Uncategorized' else c.name end order by case when c.name is null then 'Uncategorized' else c.name end asc`;
+
+    dbUser = await prisma.user.findFirst({ where: { id: user.id } });
   }
-  return json<LoaderData>({ user, cats });
+  return json<LoaderData>({ user: dbUser, cats });
 };
 export default function App() {
   const { user, cats } = useLoaderData<LoaderData>() || false;

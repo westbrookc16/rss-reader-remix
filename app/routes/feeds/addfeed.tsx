@@ -8,13 +8,12 @@ import {
 import { prisma } from "~/db.server";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { auth } from "~/utils/auth.server";
+import { auth, requirePaidUserId } from "~/utils/auth.server";
 import type { Category } from "@prisma/client";
 type LoaderData = { cats: Category[] };
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
+  const user = await requirePaidUserId(request);
+
   const cats = await prisma.category.findMany({
     where: { userId: user.id },
     orderBy: [{ name: "asc" }],
